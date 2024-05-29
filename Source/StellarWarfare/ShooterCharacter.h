@@ -36,4 +36,8 @@ private:
 	void DoJump();
 	UPROPERTY(EditAnywhere)
 	float RotationRate=70;
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class AGun> GunType;
+	UPROPERTY()
+	AGun* Gun;
 };
