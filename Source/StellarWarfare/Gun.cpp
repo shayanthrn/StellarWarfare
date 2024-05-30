@@ -2,6 +2,8 @@
 
 
 #include "Gun.h"
+#include "Kismet/GameplayStatics.h"
+#include "Engine/DamageEvents.h"
 
 // Sets default values
 AGun::AGun()
@@ -26,5 +28,26 @@ void AGun::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void AGun::PullTrigger()
+{
+	UGameplayStatics::SpawnEmitterAttached(FireParticle, Mesh, TEXT("MuzzleFlashSocket"));
+	FVector ViewLocation;
+	FRotator ViewRotation;
+	Cast<APawn>(GetOwner())->GetController()->GetPlayerViewPoint(ViewLocation,ViewRotation);
+	FVector End = ViewLocation + ViewRotation.Vector() * MaxRange;
+	FHitResult hit;
+	bool sucess = GetWorld()->LineTraceSingleByChannel(hit,ViewLocation,End,ECollisionChannel::ECC_GameTraceChannel1);
+	if(sucess){
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(),ImpactParticle,hit.ImpactPoint);
+		AActor* HitActor = hit.GetActor();
+		if (HitActor)
+		{
+			FPointDamageEvent DamageEvent = FPointDamageEvent(DamageAmount, hit, -ViewRotation.Vector(), nullptr);
+			HitActor->TakeDamage(DamageAmount, DamageEvent, Cast<APawn>(GetOwner())->GetController(), this);
+		}
+
+	}
 }
 
