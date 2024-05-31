@@ -47,5 +47,5 @@ private:
 	UPROPERTY(EditAnywhere)
 	float MaxHealth = 100;
 	UPROPERTY(VisibleAnywhere)
-	float Health;
+	float Health = MaxHealth;
 };
