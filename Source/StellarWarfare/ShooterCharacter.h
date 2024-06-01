@@ -28,6 +28,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	UFUNCTION(BlueprintPure)
 	bool IsDead() const;
+	void Shoot();
 
 private:
 	void MoveForward(float Value);
@@ -37,7 +38,6 @@ private:
 	void LookUpController(float Value);
 	void LookSidesController(float Value);
 	void DoJump();
-	void Shoot();
 	UPROPERTY(EditAnywhere)
 	float RotationRate=70;
 	UPROPERTY(EditDefaultsOnly)
