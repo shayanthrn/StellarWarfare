@@ -4,6 +4,8 @@
 #include "ShooterCharacter.h"
 #include "Kismet/GameplayStatics.h"
 #include "Gun.h"
+#include "Components/CapsuleComponent.h"
+#include "StellarWarfareGameMode.h"
 
 // Sets default values
 AShooterCharacter::AShooterCharacter()
@@ -21,7 +23,7 @@ void AShooterCharacter::BeginPlay()
 	GetMesh()->HideBoneByName(TEXT("weapon_r"),EPhysBodyOp::PBO_None);
 	Gun->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,TEXT("WeaponSocket"));
 	Gun->SetOwner(this);
-	// Health = MaxHealth;
+	Health = MaxHealth;
 }
 
 // Called every frame
@@ -93,10 +95,26 @@ float AShooterCharacter::TakeDamage(float DamageAmount, struct FDamageEvent cons
 	Health -= DamageToApply;
 	UE_LOG(LogTemp, Warning, TEXT("Health left %f"), Health);
 
+	if (IsDead())
+	{
+		AStellarWarfareGameMode* GameMode = GetWorld()->GetAuthGameMode<AStellarWarfareGameMode>();
+		if (GameMode)
+		{
+			GameMode->PawnKilled(this,EventInstigator);
+		}
+		DetachFromControllerPendingDestroy();
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
+
 	return DamageToApply;
 }
 
 bool AShooterCharacter::IsDead() const
 {
 	return Health <= 0;
+}
+
+float AShooterCharacter::GetHealthPercent() const
+{
+	return Health / MaxHealth;
 }

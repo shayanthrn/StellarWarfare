@@ -35,7 +35,13 @@ private:
 	UPROPERTY(EditAnywhere)
 	class UParticleSystem* FireParticle;
 	UPROPERTY(EditAnywhere)
+	class USoundBase* MuzzleSound;
+
+	UPROPERTY(EditAnywhere)
 	UParticleSystem* ImpactParticle;
+	UPROPERTY(EditAnywhere)
+	USoundBase *ImpactSound;
+
 	UPROPERTY(EditAnywhere)
 	float MaxRange=1000;
 	UPROPERTY(EditAnywhere)

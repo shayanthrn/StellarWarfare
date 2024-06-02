@@ -16,6 +16,7 @@ class STELLARWARFARE_API AEnemyShooterAIController : public AAIController
 
 public:
 	void virtual Tick(float DeltaSeconds) override;
+	bool IsDead() const;
 
 protected:
 	// Called when the game starts or when spawned

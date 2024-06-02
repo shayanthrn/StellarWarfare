@@ -28,6 +28,8 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	UFUNCTION(BlueprintPure)
 	bool IsDead() const;
+	UFUNCTION(BlueprintPure)
+	float GetHealthPercent() const;
 	void Shoot();
 
 private:
@@ -47,5 +49,5 @@ private:
 	UPROPERTY(EditAnywhere)
 	float MaxHealth = 100;
 	UPROPERTY(VisibleAnywhere)
-	float Health = MaxHealth;
+	float Health;
 };

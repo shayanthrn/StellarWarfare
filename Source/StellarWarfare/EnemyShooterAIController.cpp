@@ -4,6 +4,7 @@
 #include "EnemyShooterAIController.h"
 #include "Kismet/GameplayStatics.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "ShooterCharacter.h"
 
 void AEnemyShooterAIController::BeginPlay(){
 
@@ -16,4 +17,15 @@ void AEnemyShooterAIController::BeginPlay(){
 void AEnemyShooterAIController::Tick(float DeltaSeconds) 
 {
     Super::Tick(DeltaSeconds);
+}
+
+bool AEnemyShooterAIController::IsDead() const
+{
+    AShooterCharacter* ControlledCharacter = Cast<AShooterCharacter>(GetPawn());
+    if (ControlledCharacter)
+    {
+        return ControlledCharacter->IsDead();
+    }
+
+    return true;
 }

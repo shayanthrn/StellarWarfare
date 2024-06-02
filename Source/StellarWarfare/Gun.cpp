@@ -33,6 +33,7 @@ void AGun::Tick(float DeltaTime)
 void AGun::PullTrigger()
 {
 	UGameplayStatics::SpawnEmitterAttached(FireParticle, Mesh, TEXT("MuzzleFlashSocket"));
+	UGameplayStatics::SpawnSoundAttached(MuzzleSound, Mesh, TEXT("MuzzleFlashSocket"));
 	FVector ViewLocation;
 	FRotator ViewRotation;
 	Cast<APawn>(GetOwner())->GetController()->GetPlayerViewPoint(ViewLocation,ViewRotation);
@@ -44,6 +45,7 @@ void AGun::PullTrigger()
 	bool sucess = GetWorld()->LineTraceSingleByChannel(hit,ViewLocation,End,ECollisionChannel::ECC_GameTraceChannel1,Params);
 	if(sucess){
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(),ImpactParticle,hit.ImpactPoint);
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), ImpactSound, hit.Location);
 		AActor* HitActor = hit.GetActor();
 		if (HitActor)
 		{
